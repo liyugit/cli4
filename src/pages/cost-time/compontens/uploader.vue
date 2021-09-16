@@ -7,13 +7,28 @@
 <script>
 export default {
   data() {
-    return {
-      resoureData: {},
-    };
+    return {};
   },
   methods: {
-    fileChange(files) {
-      files;
+    fileChange(file) {
+      if (file.length) {
+        file = file[0];
+      }
+      let reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = () => {
+        let resource = reader.result;
+        try {
+          resource = JSON.parse(resource);
+          this.$emit("submit", resource);
+        } catch (e) {
+          console.log(e);
+        }
+      };
+
+      reader.onerror = () => {
+        console.log(reader.error);
+      };
     },
   },
 };
@@ -24,5 +39,6 @@ export default {
   display: flex;
   align-items: center;
   height: 100%;
+  margin-top: -20%;
 }
 </style>
