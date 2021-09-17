@@ -18,6 +18,9 @@
           </v-stepper-content>
           <v-stepper-content step="2">
             <analysis :resource="resource" />
+            <div class="bnts">
+              <v-btn depressed @click="step = 1" color="primary">上一步</v-btn>
+            </div>
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -35,13 +38,12 @@ export default {
   data() {
     return {
       step: 1,
+      resource: {},
     };
   },
   methods: {
     uploaderSubmit(data) {
-      data;
-      debugger;
-      this.resource = data.srcModules;
+      this.resource = data;
       this.step = 2;
     },
   },
@@ -56,6 +58,9 @@ export default {
     width: 90%;
     margin: 0 auto;
     height: 100%;
+    .bnts {
+      text-align: center;
+    }
     ::v-deep .v-stepper {
       height: 100%;
       .v-stepper__content {
