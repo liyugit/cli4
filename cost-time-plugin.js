@@ -2,7 +2,7 @@ const fs = require('fs');
 function costTimePlugin(options) {
   this.options = options;
   this.modules = {};
-  this.name = "costTimePlugin";
+  this.name = 'costTimePlugin';
   this.fileName = 'costTimePlugin.json';
 }
 costTimePlugin.prototype.apply = function (compiler) {
@@ -12,8 +12,10 @@ costTimePlugin.prototype.apply = function (compiler) {
     compilation.hooks.buildModule.tap(this.name, (module) => {
       let resource = module.resource;
       if (resource) {
-        this.modules[resource] = {};
-        this.modules[resource].begin = new Date().getTime();
+        if (!this.modules[resource]) {
+          this.modules[resource] = {};
+          this.modules[resource].begin = new Date().getTime();
+        }
       }
     });
     //监听模块“完成编译”钩子
@@ -56,9 +58,9 @@ costTimePlugin.prototype.apply = function (compiler) {
       srcModules,
       nodeModules,
     };
-    result = JSON.stringify(result,'',2);
+    result = JSON.stringify(result, '', 2);
     fs.writeFileSync(this.fileName, result);
-    console.log(result);
+    //console.log(result);
   });
 };
 module.exports = costTimePlugin;
